@@ -83,3 +83,11 @@ import_fields = ['public_comment', 'reject_media', 'reject_reports', 'obfuscate'
 ## 'domain' and 'severity' are always exported, these are additional
 ## 
 export_fields = ['public_comment']
+
+## Set a default comment for exports
+## 'pre' and 'post' prepend and postpend the comment to the existing comment, if any
+## 'replace' replaces the existing comment
+## '%source%' and '%date%' in the comment text will be expanded to the import source and
+## last updated date.
+
+comment = ['Pulled from %source% on %date%', 'pre']

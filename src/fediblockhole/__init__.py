@@ -14,8 +14,8 @@ import urllib.request as urlr
 from .blocklists import Blocklist, parse_blocklist
 from .const import DomainBlock, BlockSeverity
 
-from importlib.metadata import version
-__version__ = version('fediblockhole')
+# from importlib.metadata import version
+# __version__ = version('fediblockhole')
 
 import logging
 logging.basicConfig(level=logging.INFO,
@@ -720,6 +720,7 @@ def augment_args(args, tomldata: str=None):
     args.blocklist_instance_sources = conf.get('blocklist_instance_sources', [])
     args.allowlist_url_sources = conf.get('allowlist_url_sources', [])
     args.blocklist_instance_destinations = conf.get('blocklist_instance_destinations', [])
+    args.default_comment = conf.get('comment', [])
 
     return args
 
@@ -728,7 +729,7 @@ def setup_argparse():
     """
     ap = argparse.ArgumentParser(
         description="Bulk blocklist tool",
-        epilog=f"Part of FediBlockHole v{__version__}",
+        # epilog=f"Part of FediBlockHole v{__version__}",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     ap.add_argument('-c', '--config', default='/etc/default/fediblockhole.conf.toml', help="Config file")
     ap.add_argument('-V', '--version', action='store_true', help="Show version and exit.")
@@ -763,7 +764,7 @@ def main():
         log.setLevel(getattr(logging, levelname))
 
     if args.version:
-        print(f"v{__version__}")
+#        print(f"v{__version__}")
         sys.exit(0)
 
     # Load the configuration file
