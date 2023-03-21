@@ -300,13 +300,21 @@ def apply_mergeplan(oldblock: DomainBlock, newblock: DomainBlock, mergeplan: str
 
     return DomainBlock(**blockdata)
 
-def merge_comments(oldcomment:str, newcomment:str) -> str:
+def merge_comments(conf: argparse.Namespace, oldcomment:str, newcomment:str) -> str:
     """ Merge two comments
 
     @param oldcomment: The original comment we're merging into
     @param newcomment: The new commment we want to merge in
     @returns: a new str of the merged comment
     """
+
+    # Pre or post-pend the default comment if there is one
+    if conf.default_comment[1] == 'pre':
+        newcomment = conf.default_comment[0] + ", " + newcomment
+
+    if conf.default_comment[1] == 'post':
+        newcomment = newcomment + ", " + conf.default_comment[0]
+
     # Don't merge if both comments are None or ''
     if oldcomment in ['', None] and newcomment in ['', None]:
         return ''
@@ -329,7 +337,7 @@ def merge_comments(oldcomment:str, newcomment:str) -> str:
     # "boring, lack of moderation, nazis, scrapers"
     old_tokens = oldcomment.split(', ')
     new_tokens = newcomment.split(', ')
-    
+
     # Remove any empty string tokens that we get
     while '' in old_tokens:
         old_tokens.remove('')
