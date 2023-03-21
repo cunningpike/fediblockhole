@@ -308,12 +308,21 @@ def merge_comments(conf: argparse.Namespace, oldcomment:str, newcomment:str) -> 
     @returns: a new str of the merged comment
     """
 
+    # Expand the %date% string in the default comment, if there is one
+    if "%date%" in conf.default_comment[0]:
+        default_comment = conf.default_comment[0].replace('%date%', datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y"))
+    else:
+        default_comment = conf.default_comment[0]
+
     # Pre or post-pend the default comment if there is one
     if conf.default_comment[1] == 'pre':
-        newcomment = conf.default_comment[0] + ", " + newcomment
+        newcomment = default_comment + ', ' + newcomment
 
     if conf.default_comment[1] == 'post':
-        newcomment = newcomment + ", " + conf.default_comment[0]
+        newcomment = newcomment + ', ' + default_comment
+
+    if conf.default_comment[1] == 'replace':
+        newcomment = default_comment
 
     # Don't merge if both comments are None or ''
     if oldcomment in ['', None] and newcomment in ['', None]:
